@@ -1,0 +1,33 @@
+#todo {
+    border-radius: .75rem; 
+    background-color: #eff1f2;
+    
+    #name.form-control {
+        border-color: transparent;
+
+        &:focus {
+
+            border-color: transparent;
+            box-shadow: none;
+        }
+    }    
+
+    #deadline {
+        width: 250px;
+    }
+
+    .select-input[readonly]:not([disabled]) {
+        background-color: #fbfbfb;
+    }
+
+    ul {
+        li {
+            .form-check {
+                .form-check-input {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+}
