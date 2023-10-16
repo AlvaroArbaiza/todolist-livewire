@@ -20,7 +20,17 @@ class TodoList extends Component
     #[Rule('min:3', message: 'This name is too short')]
     public $name = '';
 
+    // deadline
+    public $deadline;
+
+    // search
     public $search;
+
+    // filter
+    public $filter = 'all';
+
+    // sort
+    public $sort = 'latest';
 
     public $editTodoID;
 
@@ -34,11 +44,26 @@ class TodoList extends Component
         // validation name
         $validated = $this->validateOnly('name');
 
+        // Verifica se $deadline è impostata
+        if ($this->deadline) {
+            $validated = $this->validate([
+                'name' => 'required', 
+                'deadline' => 'date'
+            ]);
+        } else {
+            $validated = $this->validate([
+                'name' => 'required'
+            ]);
+        }
+
         // create
         ToDo::create($validated);
 
         // reset
-        $this->reset('name');
+        $this->reset([
+            'name',
+            'deadline'
+        ]);
 
         // success
         session()->flash('success','Created!');
@@ -97,8 +122,35 @@ class TodoList extends Component
 
     public function render()
     {
+
+        $query = ToDo::query();
+
+        // filter
+        if ($this->filter === 'active') {
+            $todos = $query->where('completed', false)->whereNull('deadline')->get();
+
+        } elseif ($this->filter === 'completed') {
+            $todos = $query->where('completed', true)->get();
+
+        } elseif ($this->filter === 'with_deadline') {
+            $todos = $query->whereNotNull('deadline')->get();
+        }
+
+        // sort
+        if ($this->sort === 'latest') {
+            $query->latest();
+        } elseif ($this->sort === 'oldest') {
+            $query->oldest();
+        } elseif ($this->sort === 'due_soonest') {
+            $query->whereNotNull('deadline')->orderBy('deadline');
+        } elseif ($this->sort === 'due_latest') {
+            $query->whereNotNull('deadline')->orderByDesc('deadline');
+        }
+
+        $todos = $query->where('name', 'like', "%{$this->search}%")->paginate(6);
+
         return view('livewire.todo-list', [
-            'todos' => ToDo::latest()->where('name','like',"%".$this->search."%")->paginate(6)
+            'todos' => $todos
         ]);
     }
 }
