@@ -15,7 +15,8 @@ class ToDo extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'completed'
+        'completed',
+        'deadline'
     ];
 
     //collegamento many to one con tabella Users

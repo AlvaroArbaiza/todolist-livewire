@@ -41,19 +41,16 @@ class TodoList extends Component
     // create
     public function create() {
 
-        // validation name
-        $validated = $this->validateOnly('name');
-
         // Verifica se $deadline è impostata
         if ($this->deadline) {
             $validated = $this->validate([
-                'name' => 'required', 
+                'name' => 'required|min:3', 
                 'deadline' => 'date'
             ]);
         } else {
-            $validated = $this->validate([
-                'name' => 'required'
-            ]);
+
+            // validation name
+            $validated = $this->validateOnly('name');
         }
 
         // create
