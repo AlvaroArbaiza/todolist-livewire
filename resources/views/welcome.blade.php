@@ -12,7 +12,7 @@
 
         @vite('resources/js/app.js')
     </head>
-    <body class="antialiased">
+    <body>
         
         @livewire('todo-list')
     </body>
