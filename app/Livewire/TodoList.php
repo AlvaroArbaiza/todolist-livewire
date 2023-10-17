@@ -56,23 +56,23 @@ class TodoList extends Component
         // create
         ToDo::create($validated);
 
-        // reset
+        // reset: reset di variabili name e deadline
         $this->reset([
             'name',
             'deadline'
         ]);
 
-        // success
+        // success: messaggio creato quando viene creata una task
         session()->flash('success','Created!');
 
-        // reset pagination
+        // reset pagination: la paginazione torna in posizione quando si crea una task
         $this->resetPage();
 
-        // cancelEdit
+        // cancelEdit: l'edit di una task aperta verrà chiusa 
         $this->cancelEdit();
     }
 
-    // toggle: questo metodo trova l'ID dell'elemento, inverte il suo stato(completed) e salva
+    // toggle: questo metodo trova l'ID dell'elemento, inverte il suo stato(completed), salva e aggiorna il record
     public function toggle($todoID) {
         $todo = ToDo::find($todoID);
 
@@ -80,19 +80,22 @@ class TodoList extends Component
         $todo->save();
     }
 
-    // edit
+    // edit: metodo che apre la possibilità di modificare il nome della task
     public function edit($todoID) {
 
         $this->editTodoID = $todoID;
         $this->editName = ToDo::find($todoID)->name;
     }
 
-    // delete
+    // delete: metodo per la cancellazione della task
     public function delete($todoID) {
 
+        // cancellazione della task risalendo dall'ID
         try {
 
             ToDo::findorFail($todoID)->delete();
+
+        // In caso di errore comparira un messaggio error
         } catch(Exception $e) {
             // error
             session()->flash('error','Failed to delete todo!');
@@ -100,12 +103,12 @@ class TodoList extends Component
         }
     }
 
-    // Cancel Edit
+    // Cancel Edit: resetta le variabili per l'editing
     public function cancelEdit() {
         $this->reset('editTodoID','editName');
     }
 
-    // Update
+    // Update: metodo che aggiorna il nome della task risalendo ad essa tramite l'ID
     public function update() {
         // validation editName
         $this->validateOnly('editName');
@@ -114,36 +117,50 @@ class TodoList extends Component
             'name' => $this->editName
         ]);
 
+        // cancel editing
         $this->cancelEdit();
     }
 
     public function render()
     {
 
+        // creazione query
         $query = ToDo::query();
 
-        // filter
+        ///// filter: filtraggio tasks
+        // se completed è false e la deadline è null
         if ($this->filter === 'active') {
             $todos = $query->where('completed', false)->whereNull('deadline')->get();
 
+        // se completed è true
         } elseif ($this->filter === 'completed') {
             $todos = $query->where('completed', true)->get();
 
+        // se deadline non è null
         } elseif ($this->filter === 'with_deadline') {
             $todos = $query->whereNotNull('deadline')->get();
         }
 
-        // sort
+
+        ///// sort: ordine tasks
+        // dal più recente
         if ($this->sort === 'latest') {
             $query->latest();
+
+        // dall'ultimo creato
         } elseif ($this->sort === 'oldest') {
             $query->oldest();
+
+        // dalla scadenza più recente
         } elseif ($this->sort === 'due_soonest') {
             $query->whereNotNull('deadline')->orderBy('deadline');
+
+        // dalla scadenza più lontana
         } elseif ($this->sort === 'due_latest') {
             $query->whereNotNull('deadline')->orderByDesc('deadline');
         }
 
+        // query per la ricerca: dove name è this->search e con una paginazione di 6 tasks per volta
         $todos = $query->where('name', 'like', "%{$this->search}%")->paginate(6);
 
         return view('livewire.todo-list', [
