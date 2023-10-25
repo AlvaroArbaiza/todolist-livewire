@@ -21,6 +21,9 @@ class TodoList extends Component
     public $name = '';
 
     // deadline
+    #[Rule('nullable')]
+    #[Rule('date', message: 'Must be of type date.')]
+    #[Rule('date_format:Y-m-d\TH:i', message: 'Invalid deadline format')]
     public $deadline;
 
     // search
@@ -44,8 +47,8 @@ class TodoList extends Component
         // Verifica se $deadline è impostata
         if ($this->deadline) {
             $validated = $this->validate([
-                'name' => 'required|min:3', 
-                'deadline' => 'date'
+                'name' => 'required|min:3',
+                'deadline' => 'nullable|date|date_format:Y-m-d\TH:i'
             ]);
         } else {
 

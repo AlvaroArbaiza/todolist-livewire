@@ -5,6 +5,8 @@
 /public/storage
 /storage/*.key
 /vendor
+/resources/views/livewire/clicker.blade.php
+/app/Livewire/Clicker.php
 .env
 .env.backup
 .env.production

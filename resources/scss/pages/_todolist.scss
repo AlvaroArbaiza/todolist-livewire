@@ -1,25 +1,81 @@
 #todo {
     border-radius: .75rem; 
-    background-color: #eff1f2;
-    
-    #name.form-control {
-        border-color: transparent;
+    background-color: $color-white;
 
-        &:focus {
+    // HEADER
+    h1 {
+        color: $color-purple;
+        cursor: default;
+    }
 
-            border-color: transparent;
-            box-shadow: none;
+    // CREATE
+    .card {        
+        .card-body {
+            form {
+
+                // Add new - name
+                #name {
+                    border-color: transparent;
+                    color: $color-black;
+                    font-weight: 400;
+
+                    &::placeholder {
+                        color: $color-black;
+                    }
+
+                    &:focus {
+                        border-color: transparent;
+                        box-shadow: none;
+                    }
+                }
+
+                // Set due date - deadline
+                #deadline {
+                    width: 290px;
+                    display: none;
+
+                    &:focus {
+                        box-shadow: 0 0 0 0.25rem $box-shadow-black;
+                    }
+                }
+                
+                // Deadline - icon
+                #icoDeadline {
+                    cursor: pointer;
+                }
+            }
         }
-    }    
-
-    #deadline {
-        width: 250px;
     }
 
-    .select-input[readonly]:not([disabled]) {
-        background-color: #fbfbfb;
+    // Filters
+    .filters {
+    
+        .form-select:focus {
+            border-color: $color-purple;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem $box-shadow-purple;
+        }
+
+        a {
+            color: $color-purple
+        }
+
+        p {
+            color: $color-purple;
+            cursor: default;
+        }
     }
 
+    // search
+    .search {
+        .form-control:focus {
+            border-color: $color-purple;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem $box-shadow-purple;
+        }
+    }
+
+    // todo group
     ul {
         li {
             .form-check {
@@ -28,6 +84,81 @@
                     height: 20px;
                 }
             }
+
+            // Options
+            &.options {
+                .optionbutton {
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+            }
+
+            // deadline-box
+            .deadline-box {
+                p {
+                    cursor: default;
+                }
+            }
+
+            // date
+            .date {
+                a {
+                    cursor: default;
+                }
+            }
         }
+    }
+    
+    .box-shadow-gray {
+        box-shadow: 0 0.125rem 0.25rem $box-shadow-gray;
+    }
+    .box-shadow-yellow {
+        box-shadow: 0 0 0.2rem 0px $box-shadow-yellow;;
+    }
+    
+    .btn-purple {
+        border-color: $color-purple;
+        background-color: $color-purple;
+        border-width: 3px;
+        color: $color-white;
+        font-size: 18px;
+        font-weight: 700;
+        transition: 0.5s;
+        filter: opacity(0.9);
+        
+        &:hover {
+            filter: contrast(1.2);
+            filter: opacity(1);
+            color: $color-white;
+            background-color: $color-purple;
+        }    
+    }
+    
+    .form-check-input {
+        &:checked {
+            background-color: $color-purple;
+            border-color: $color-purple;
+        }
+    
+        &:focus {
+            border-color: $color-purple;
+        }
+    }
+
+    .page-link {
+        color: $color-purple;
+        
+        &:focus {
+            box-shadow: 0 0 0 0.25rem $box-shadow-purple;
+        }
+    }
+    .page-link.active, .active > .page-link {
+        color: #ffffff;
+        background-color: $color-purple;
+        border-color: $color-purple;
+        filter: brightness(1.2);
     }
 }

@@ -1,5 +1,6 @@
 @import "~bootstrap/bootstrap/scss/bootstrap";
-@import "~bootstrap/bootstrap-icons/font/bootstrap-icons";
+// @import "~bootstrap/bootstrap-icons/font/bootstrap-icons";
+@import './partials/variables';
 @import './pages/todolist';
 
 * {
@@ -7,3 +8,18 @@
     padding: 0;
     margin: 0;
 }
+
+html {
+    height: 100vh;
+    background: linear-gradient(
+        30deg,
+        hsla(254, 20%, 44%, 0.537) 0%,
+        $color-purple 45%
+    );
+}
+
+body {
+    width: 100%;
+    background-color: transparent;
+}
+
